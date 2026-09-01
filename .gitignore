@@ -1,6 +1,10 @@
 # Credentials - কখনো GitHub এ তুলবেন না!
 .env
 
+# Portable Git (local tool, GitHub এ দরকার নেই)
+PortableGit/
+PortableGit.exe
+
 # Python
 __pycache__/
 *.py[cod]
