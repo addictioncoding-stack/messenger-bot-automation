@@ -1,0 +1,14 @@
+# Credentials - কখনো GitHub এ তুলবেন না!
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+env/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
