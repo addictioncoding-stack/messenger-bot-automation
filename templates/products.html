@@ -11,27 +11,41 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 .nav-icon{width:34px;height:34px;background:linear-gradient(135deg,#e91e8c,#c2185b);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
 .back-btn{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;padding:7px 14px;border:1px solid rgba(255,255,255,.15);border-radius:8px;transition:.2s}
 .back-btn:hover{background:rgba(255,255,255,.08)}
-.container{max-width:960px;margin:0 auto;padding:36px 20px}
+.container{max-width:980px;margin:0 auto;padding:36px 20px}
 .page-title{font-size:24px;font-weight:700;margin-bottom:4px}
 .page-sub{color:rgba(255,255,255,.4);font-size:13px;margin-bottom:30px}
 .alert{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:20px}
 
 /* PRODUCT GRID */
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px}
-.product-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;position:relative;transition:.2s}
-.product-card:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
-.p-category{font-size:11px;color:#e91e8c;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.p-name{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.3}
-.p-price{font-size:22px;font-weight:800;background:linear-gradient(135deg,#e91e8c,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
-.p-detail{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:4px}
-.p-colors{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
-.color-tag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:2px 8px;border-radius:5px;font-size:10px}
-.del-btn{position:absolute;top:12px;right:12px;background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.2);color:#ff6b6b;width:28px;height:28px;border-radius:7px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
-.del-btn:hover{background:rgba(255,59,59,.25)}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-bottom:32px}
+.product-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;position:relative;transition:.2s}
+.product-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.08)}
+
+/* Product Image */
+.p-img-wrap{width:100%;height:160px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.p-img-wrap img{width:100%;height:100%;object-fit:cover}
+.p-img-placeholder{font-size:48px;opacity:.3}
+.img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;cursor:pointer}
+.p-img-wrap:hover .img-overlay{opacity:1}
+.img-overlay-btn{background:rgba(233,30,140,.9);border:none;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+
+.p-body{padding:16px}
+.p-category{font-size:10px;color:#e91e8c;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.p-name{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.p-price{font-size:20px;font-weight:800;background:linear-gradient(135deg,#e91e8c,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.p-detail{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6}
+.p-colors{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
+.color-tag{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);padding:2px 7px;border-radius:4px;font-size:9px}
+.card-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.btn-img{flex:1;background:rgba(233,30,140,.12);border:1px solid rgba(233,30,140,.25);color:#e91e8c;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-img:hover{background:rgba(233,30,140,.22)}
+.btn-del{background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.2);color:#ff6b6b;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:.2s}
+.btn-del:hover{background:rgba(255,59,59,.22)}
+.has-img-badge{position:absolute;top:10px;left:10px;background:rgba(34,197,94,.85);color:#fff;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700}
 
 /* ADD FORM */
 .add-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px}
-.add-card h3{font-size:15px;font-weight:700;margin-bottom:20px;color:rgba(255,255,255,.85)}
+.add-card h3{font-size:15px;font-weight:700;margin-bottom:20px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .form-group label{display:block;color:rgba(255,255,255,.55);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
 .form-input,.form-textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#fff;font-size:13px;font-family:inherit;outline:none;transition:.2s}
@@ -40,7 +54,19 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 .full{grid-column:1/-1}
 .btn-add{padding:11px 24px;background:linear-gradient(135deg,#e91e8c,#c2185b);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}
 .btn-add:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(233,30,140,.4)}
-.hint{color:rgba(255,255,255,.35);font-size:11px;margin-top:4px}
+.hint{color:rgba(255,255,255,.3);font-size:11px;margin-top:4px}
+
+/* IMG MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#1a1a2e;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;width:100%;max-width:460px}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:16px}
+.modal label{display:block;color:rgba(255,255,255,.55);font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.modal-preview{width:100%;height:140px;background:rgba(255,255,255,.05);border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.modal-preview img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.modal-btns{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+.btn-cancel{padding:9px 18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-radius:9px;font-size:13px;cursor:pointer}
+.modal-hint{font-size:11px;color:rgba(255,255,255,.3);margin-top:8px}
 </style>
 </head>
 <body>
@@ -51,7 +77,7 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 
 <div class="container">
   <div class="page-title">&#x1F4E6; পণ্য ব্যবস্থাপনা</div>
-  <div class="page-sub">পণ্য যোগ, সম্পাদনা বা মুছে ফেলুন। AI এই তথ্য ব্যবহার করে reply দেবে।</div>
+  <div class="page-sub">পণ্য যোগ করুন, ছবি দিন — Bot এই তথ্য ও ছবি customer কে পাঠাবে।</div>
 
   {% if msg %}<div class="alert">&#x2705; {{ msg }}</div>{% endif %}
 
@@ -59,28 +85,51 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
   <div class="products-grid">
     {% for p in products %}
     <div class="product-card">
-      <form method="POST" action="/admin/products/delete" style="display:inline" onsubmit="return confirm('মুছে ফেলবো?')">
-        <input type="hidden" name="id" value="{{ p.id }}">
-        <button type="submit" class="del-btn">&#x1F5D1;</button>
-      </form>
-      <div class="p-category">{{ p.category }}</div>
-      <div class="p-name">{{ p.name }}</div>
-      <div class="p-price">৳{{ p.price }}</div>
-      <div class="p-detail">&#x1F4E6; {{ p.package }}</div>
-      {% if p.free_gift and p.free_gift != '-' %}
-      <div class="p-detail">&#x1F381; গিফট: {{ p.free_gift }}</div>
+
+      {% if p.image %}
+        <span class="has-img-badge">&#x2705; ছবি আছে</span>
       {% endif %}
-      <div class="p-detail">&#x1F4DD; {{ p.description }}</div>
-      {% if p.colors %}
-      <div class="p-colors">
-        {% for c in p.colors %}<span class="color-tag">{{ c }}</span>{% endfor %}
+
+      <div class="p-img-wrap">
+        {% if p.image %}
+          <img src="{{ p.image }}" alt="{{ p.name }}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div class="p-img-placeholder" style="display:none">&#x1F4F8;</div>
+        {% else %}
+          <div class="p-img-placeholder">&#x1F4F8;</div>
+        {% endif %}
+        <div class="img-overlay" onclick="openImgModal({{ p.id }}, '{{ p.image|e }}', '{{ p.name|e }}')">
+          <button class="img-overlay-btn">&#x1F4F7; ছবি দিন</button>
+        </div>
       </div>
-      {% endif %}
+
+      <div class="p-body">
+        <div class="p-category">{{ p.category }}</div>
+        <div class="p-name">{{ p.name }}</div>
+        <div class="p-price">৳{{ p.price }}</div>
+        <div class="p-detail">&#x1F4E6; {{ p.package }}</div>
+        {% if p.free_gift and p.free_gift != '-' %}
+          <div class="p-detail">&#x1F381; গিফট: {{ p.free_gift }}</div>
+        {% endif %}
+        <div class="p-detail">{{ p.description[:60] }}{% if p.description|length > 60 %}...{% endif %}</div>
+        {% if p.colors %}
+        <div class="p-colors">{% for c in p.colors %}<span class="color-tag">{{ c }}</span>{% endfor %}</div>
+        {% endif %}
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-img" onclick="openImgModal({{ p.id }}, '{{ p.image|e }}', '{{ p.name|e }}')">
+          &#x1F4F7; {% if p.image %}ছবি বদলান{% else %}ছবি যোগ করুন{% endif %}
+        </button>
+        <form method="POST" action="/admin/products/delete" onsubmit="return confirm('মুছে ফেলবো?')">
+          <input type="hidden" name="id" value="{{ p.id }}">
+          <button type="submit" class="btn-del">&#x1F5D1;</button>
+        </form>
+      </div>
     </div>
     {% endfor %}
   </div>
 
-  <!-- ADD NEW -->
+  <!-- ADD NEW PRODUCT -->
   <div class="add-card">
     <h3>&#x2795; নতুন পণ্য যোগ করুন</h3>
     <form method="POST" action="/admin/products/add">
@@ -91,7 +140,7 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
         </div>
         <div class="form-group">
           <label>ক্যাটাগরি</label>
-          <input class="form-input" name="category" placeholder="যেমন: চুড়ি, পায়েল, সেট">
+          <input class="form-input" name="category" placeholder="চুড়ি / পায়েল / সেট">
         </div>
         <div class="form-group">
           <label>মূল্য (৳) *</label>
@@ -99,20 +148,24 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
         </div>
         <div class="form-group">
           <label>প্যাকেজ</label>
-          <input class="form-input" name="package" placeholder="যেমন: ১২ পিস, ১ জোড়া">
+          <input class="form-input" name="package" placeholder="১২ পিস / ১ জোড়া">
         </div>
         <div class="form-group">
           <label>ফ্রি গিফট</label>
-          <input class="form-input" name="free_gift" placeholder="যেমন: ৪ পিস ফ্রি">
+          <input class="form-input" name="free_gift" placeholder="৪ পিস ফ্রি">
         </div>
         <div class="form-group">
           <label>ডেলিভারি</label>
           <input class="form-input" name="delivery" value="ফ্রি">
         </div>
         <div class="form-group full">
-          <label>রঙ (কমা দিয়ে আলাদা করুন)</label>
+          <label>পণ্যের ছবির URL</label>
+          <input class="form-input" name="image_url" placeholder="https://example.com/product.jpg">
+          <div class="hint">Facebook post বা যেকোনো public image URL paste করুন</div>
+        </div>
+        <div class="form-group full">
+          <label>রঙ (comma দিয়ে আলাদা)</label>
           <input class="form-input" name="colors" placeholder="রেড, পিংক, ব্লু, গোল্ডেন">
-          <div class="hint">একাধিক রঙ থাকলে comma দিয়ে লিখুন</div>
         </div>
         <div class="form-group full">
           <label>বিবরণ</label>
@@ -123,5 +176,51 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
     </form>
   </div>
 </div>
+
+<!-- IMAGE URL MODAL -->
+<div class="modal-bg" id="imgModal">
+  <div class="modal">
+    <h3>&#x1F4F7; পণ্যের ছবি দিন</h3>
+    <form method="POST" action="/admin/products/update_image">
+      <input type="hidden" name="id" id="modalProductId">
+      <label>ছবির URL</label>
+      <input class="form-input" name="image_url" id="modalImgUrl"
+             placeholder="https://..." oninput="previewImg(this.value)">
+      <div class="modal-hint">Facebook post এর ছবি, Google Drive (public), বা যেকোনো public URL</div>
+      <div class="modal-preview" id="modalPreview">
+        <span style="color:rgba(255,255,255,.3);font-size:13px">URL দিলে preview দেখাবে</span>
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-cancel" onclick="closeImgModal()">বাতিল</button>
+        <button type="submit" class="btn-add">&#x2713; Save করুন</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openImgModal(id, currentUrl, name) {
+  document.getElementById('modalProductId').value = id;
+  document.getElementById('modalImgUrl').value    = currentUrl || '';
+  if (currentUrl) previewImg(currentUrl);
+  document.getElementById('imgModal').classList.add('show');
+}
+function closeImgModal() {
+  document.getElementById('imgModal').classList.remove('show');
+  document.getElementById('modalPreview').innerHTML =
+    '<span style="color:rgba(255,255,255,.3);font-size:13px">URL দিলে preview দেখাবে</span>';
+}
+function previewImg(url) {
+  const prev = document.getElementById('modalPreview');
+  if (url.startsWith('http')) {
+    prev.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<span style=color:rgba(255,59,59,.8);font-size:12px>ছবি লোড হয়নি — URL চেক করুন</span>'">`;
+  } else {
+    prev.innerHTML = '<span style="color:rgba(255,255,255,.3);font-size:13px">URL দিলে preview দেখাবে</span>';
+  }
+}
+document.getElementById('imgModal').addEventListener('click', function(e){
+  if(e.target===this) closeImgModal();
+});
+</script>
 </body>
 </html>
