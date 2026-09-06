@@ -15,7 +15,7 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 .nav-link.active{background:rgba(233,30,140,.15);color:#e91e8c;border:1px solid rgba(233,30,140,.25)}
 .logout{color:#ff6b6b;font-size:13px;text-decoration:none;padding:7px 14px;border:1px solid rgba(255,59,59,.25);border-radius:8px;transition:.2s}
 .logout:hover{background:rgba(255,59,59,.12)}
-.container{max-width:1050px;margin:0 auto;padding:36px 20px}
+.container{max-width:1150px;margin:0 auto;padding:36px 20px}
 .page-title{font-size:26px;font-weight:700;margin-bottom:4px}
 .page-sub{color:rgba(255,255,255,.4);font-size:13px;margin-bottom:32px}
 .alert{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:20px}
@@ -58,10 +58,10 @@ input:checked + .slider{background:linear-gradient(135deg,#22c55e,#16a34a);borde
 input:checked + .slider::before{transform:translateX(32px)}
 .toggle-label{font-size:11px;color:rgba(255,255,255,.5);font-weight:700}
 
-/* ORDERS TABLE */
-.section-title{font-size:16px;font-weight:700;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.table-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;overflow-x:auto;margin-bottom:24px}
-table{width:100%;border-collapse:collapse;min-width:680px}
+/* TABLES */
+.section-title{font-size:16px;font-weight:700;margin-bottom:12px;color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:space-between}
+.table-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;overflow-x:auto;margin-bottom:32px}
+table{width:100%;border-collapse:collapse;min-width:700px}
 thead th{background:rgba(233,30,140,.18);padding:12px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.65);text-align:left;white-space:nowrap}
 tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:.2s}
 tbody tr:last-child{border-bottom:none}
@@ -70,6 +70,34 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
 .badge-bkash{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700}
 .badge-cod{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700}
 .badge-new{background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.3);color:#60a5fa;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700}
+
+/* SENTIMENT BADGES */
+.s-good{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#4ade80;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700}
+.s-bad{background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#f87171;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700}
+.s-general{background:rgba(234,179,8,.2);border:1px solid rgba(234,179,8,.4);color:#facc15;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700}
+
+.btn-approve{background:#22c55e;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;margin-right:4px}
+.btn-reject{background:#ef4444;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+
+/* EDIT LOG MODAL & ACTIONS */
+.btn-edit-log{background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.3);color:#60a5fa;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-edit-log:hover{background:rgba(96,165,250,.25)}
+.btn-del-log{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-del-log:hover{background:rgba(239,68,68,.22)}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:#16213e;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:24px;width:92%;max-width:500px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:18px;color:#fff}
+.modal-row{margin-bottom:14px}
+.modal-row label{display:block;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;margin-bottom:6px}
+.modal-input,.modal-textarea,.modal-select{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 12px;color:#fff;font-size:13px;font-family:inherit;outline:none;transition:.2s}
+.modal-input:focus,.modal-textarea:focus,.modal-select:focus{border-color:#e91e8c;background:rgba(233,30,140,.06)}
+.modal-select option{background:#16213e;color:#fff}
+.modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.btn-cancel{padding:9px 18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);border-radius:9px;font-size:13px;cursor:pointer}
+.btn-save{padding:9px 20px;background:linear-gradient(135deg,#e91e8c,#c2185b);border:none;color:#fff;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
+
 .no-orders{text-align:center;padding:36px;color:rgba(255,255,255,.25);font-size:13px}
 .footer{text-align:center;color:rgba(255,255,255,.18);font-size:11px;margin-top:36px}
 </style>
@@ -88,7 +116,7 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
 
 <div class="container">
   <div class="page-title">&#x1F4CA; Dashboard</div>
-  <div class="page-sub">Bella Basket Jewelry — Bot Control Center</div>
+  <div class="page-sub">Bella Basket Jewelry — Bot Control & Customer Feedback Center</div>
 
   {% if msg %}<div class="alert">&#x2705; {{ msg }}</div>{% endif %}
 
@@ -106,7 +134,7 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
       <div class="quick-card-icon q3">&#x1F6CD;</div>
       <div class="quick-card-text"><h4>Products</h4><p>পণ্য যোগ/সম্পাদনা</p></div>
     </a>
-    <a href="/admin/orders" class="quick-card">
+    <a href="/admin" class="quick-card">
       <div class="quick-card-icon q4">&#x1F4CB;</div>
       <div class="quick-card-text"><h4>Orders</h4><p>{{ stats.orders }} টি অর্ডার</p></div>
     </a>
@@ -115,9 +143,9 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
   <!-- STATS -->
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-value">{{ stats.total }}</div><div class="stat-label">&#x1F4E8; মোট মেসেজ</div></div>
-    <div class="stat-card"><div class="stat-value">{{ stats.replied }}</div><div class="stat-label">&#x1F4AC; Reply দেওয়া</div></div>
     <div class="stat-card"><div class="stat-value">{{ stats.orders }}</div><div class="stat-label">&#x1F6CD; মোট অর্ডার</div></div>
-    <div class="stat-card"><div class="stat-value">{{ stats.keywords }}</div><div class="stat-label">&#x1F511; Keywords</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.pending }}</div><div class="stat-label">&#x23F3; সাইজ এপ্রুভাল পেন্ডিং</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.logs }}</div><div class="stat-label">&#x1F4DD; কথা ও সেন্টিমেন্ট লগ</div></div>
   </div>
 
   <!-- BOT ON/OFF -->
@@ -128,7 +156,7 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
         Bot {{ 'ONLINE' if bot_active else 'OFFLINE' }}
       </div>
       <h2>Auto-Reply {{ 'চালু আছে ✅' if bot_active else 'বন্ধ আছে ❌' }}</h2>
-      <p>{% if bot_active %}Bot active — customer দের reply দিচ্ছে (Keyword + AI){% else %}Bot বন্ধ — কোনো reply যাবে না{% endif %}</p>
+      <p>{% if bot_active %}Bot active — Gemini AI কনটেক্সট বুঝে ও সেন্টিমেন্ট এনালাইসিস করে উত্তর দিচ্ছে{% else %}Bot বন্ধ — কোনো reply যাবে না{% endif %}</p>
     </div>
     <div class="toggle-wrap">
       <form method="POST" action="/admin/toggle" id="tf">
@@ -141,32 +169,176 @@ tbody td{padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7)}
     </div>
   </div>
 
-  <!-- RECENT ORDERS -->
-  <div class="section-title">&#x1F6CD; সাম্প্রতিক অর্ডার</div>
+  <!-- PENDING APPROVALS FOR SIZES (22 / 30) -->
+  {% if pending %}
+  <div class="section-title">&#x26A0;&#xFE0F; বিশেষ সাইজ এপ্রুভাল রিকোয়েস্ট (সাইজ ২২ / ৩০)</div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>তারিখ</th><th>নাম</th><th>মোবাইল</th><th>ঠিকানা</th><th>পণ্য</th><th>রঙ</th><th>পেমেন্ট</th><th>স্ট্যাটাস</th></tr></thead>
+      <thead><tr><th>সময়</th><th>কাস্টমার ID</th><th>পণ্য</th><th>অনুরোধকৃত সাইজ</th><th>অ্যাকশন</th></tr></thead>
+      <tbody>
+        {% for ap_id, ap in pending.items() %}
+        <tr>
+          <td>{{ ap.timestamp }}</td>
+          <td>{{ ap.sender_id }}</td>
+          <td>{{ ap.product }}</td>
+          <td><strong style="color:#facc15">সাইজ {{ ap.size }}</strong></td>
+          <td>
+            <form method="POST" action="/admin/approval/approve/{{ ap_id }}" style="display:inline">
+              <button class="btn-approve">&#x2705; এপ্রুভ (স্টক আছে)</button>
+            </form>
+            <form method="POST" action="/admin/approval/reject/{{ ap_id }}" style="display:inline">
+              <button class="btn-reject">&#x274C; রিজেক্ট (স্টক আউট)</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <!-- RECENT ORDERS -->
+  <div class="section-title">&#x1F6CD; সাম্প্রতিক অর্ডার লিস্ট (Excel-এ সেভ হচ্ছে)</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>তারিখ</th><th>অর্ডার ID</th><th>নাম</th><th>মোবাইল</th><th>ঠিকানা</th><th>পণ্য</th><th>রঙ/সাইজ</th><th>পেমেন্ট</th><th>স্ট্যাটাস</th></tr></thead>
       <tbody>
         {% if orders %}
           {% for o in orders|reverse %}
           <tr>
             <td>{{ o[0] or '-' }}</td>
-            <td><strong>{{ o[1] or '-' }}</strong></td>
-            <td>{{ o[2] or '-' }}</td>
-            <td>{{ o[3] or '-' }}</td>
-            <td>{{ o[4] or '-' }}</td>
-            <td>{{ o[5] or '-' }}</td>
-            <td>{% if o[6] in ('বিকাশ','নগদ','রকেট') %}<span class="badge-bkash">{{ o[6] }}</span>{% else %}<span class="badge-cod">COD</span>{% endif %}</td>
-            <td><span class="badge-new">{{ o[7] or 'নতুন' }}</span></td>
+            {% if o|length >= 9 %}
+              <td><strong style="color:#f43f5e">#{{ o[1] or '-' }}</strong></td>
+              <td><strong>{{ o[2] or '-' }}</strong></td>
+              <td>{{ o[3] or '-' }}</td>
+              <td>{{ o[4] or '-' }}</td>
+              <td>{{ o[5] or '-' }}</td>
+              <td>{{ o[6] or '-' }}</td>
+              <td>{% if o[7] in ('বিকাশ','নগদ','রকেট') %}<span class="badge-bkash">{{ o[7] }}</span>{% else %}<span class="badge-cod">COD</span>{% endif %}</td>
+              <td>
+                <form method="POST" action="/admin/orders/status" style="margin:0">
+                  <input type="hidden" name="order_id" value="{{ o[1] }}">
+                  <select name="status" onchange="this.form.submit()" style="background:#16213e;color:#fff;border:1px solid rgba(255,255,255,.2);padding:3px 6px;border-radius:6px;font-size:11px;cursor:pointer">
+                    <option value="নতুন" {{ 'selected' if (o[8] or '') == 'নতুন' else '' }}>নতুন</option>
+                    <option value="কনফার্মড" {{ 'selected' if (o[8] or '') == 'কনফার্মড' else '' }}>কনফার্মড</option>
+                    <option value="প্যাকেজিং" {{ 'selected' if (o[8] or '') == 'প্যাকেজিং' else '' }}>প্যাকেজিং</option>
+                    <option value="ডেলিভারিতে পাঠানো হয়েছে" {{ 'selected' if (o[8] or '') == 'ডেলিভারিতে পাঠানো হয়েছে' else '' }}>ডেলিভারিতে পাঠানো</option>
+                    <option value="ডেলিভারড" {{ 'selected' if (o[8] or '') == 'ডেলিভারড' else '' }}>ডেলিভারড</option>
+                    <option value="বাতিল" {{ 'selected' if (o[8] or '') == 'বাতিল' else '' }}>বাতিল</option>
+                  </select>
+                </form>
+              </td>
+            {% else %}
+              <td><span style="color:rgba(255,255,255,.4)">-</span></td>
+              <td><strong>{{ o[1] or '-' }}</strong></td>
+              <td>{{ o[2] or '-' }}</td>
+              <td>{{ o[3] or '-' }}</td>
+              <td>{{ o[4] or '-' }}</td>
+              <td>{{ o[5] or '-' }}</td>
+              <td>{% if o[6] in ('বিকাশ','নগদ','রকেট') %}<span class="badge-bkash">{{ o[6] }}</span>{% else %}<span class="badge-cod">COD</span>{% endif %}</td>
+              <td><span class="badge-new">{{ o[7] or 'নতুন' }}</span></td>
+            {% endif %}
           </tr>
           {% endfor %}
         {% else %}
-          <tr><td colspan="8" class="no-orders">এখনো কোনো অর্ডার আসেনি।</td></tr>
+          <tr><td colspan="9" class="no-orders">এখনো কোনো অর্ডার আসেনি।</td></tr>
         {% endif %}
       </tbody>
     </table>
   </div>
-  <div class="footer">Bella Basket Jewelry — Hybrid AI Bot (Keyword + Gemini)</div>
+
+  <!-- CUSTOMER CONVERSATION & SENTIMENT LOGS -->
+  <div class="section-title">
+    <span>&#x1F4DD; কাস্টমার কথা ও সেন্টিমেন্ট (AI নোটকৃত - Excel এ সেভ হচ্ছে)</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>তারিখ ও সময়</th><th>কাস্টমার ID/মোবাইল</th><th>কাস্টমার বার্তা</th><th>বট রিপ্লাই</th><th>সেন্টিমেন্ট</th><th>পণ্য</th><th>অ্যাকশন</th></tr></thead>
+      <tbody>
+        {% if logs %}
+          {% for l in logs|reverse %}
+          <tr>
+            <td>{{ l[1] or '-' }}</td>
+            <td><strong>{{ l[2] or '-' }}</strong></td>
+            <td style="max-width:200px;word-break:break-word">{{ l[3] or '-' }}</td>
+            <td style="max-width:240px;word-break:break-word">{{ l[4] or '-' }}</td>
+            <td>
+              {% if l[5] == 'Good' %}
+                <span class="s-good">&#x1F44D; Good</span>
+              {% elif l[5] == 'Bad' %}
+                <span class="s-bad">&#x1F44E; Bad</span>
+              {% else %}
+                <span class="s-general">&#x1F4AC; General</span>
+              {% endif %}
+            </td>
+            <td>{{ l[6] or '-' }}</td>
+            <td style="white-space:nowrap">
+              <button type="button" class="btn-edit-log" onclick="openLogEdit('{{ l[0] }}', `{{ (l[3] or '')|replace('`','\\`')|replace('\n','\\n') }}`, `{{ (l[4] or '')|replace('`','\\`')|replace('\n','\\n') }}`, '{{ l[5] or 'General' }}', '{{ (l[6] or '')|replace('`','\\`') }}')">&#x270F; Edit</button>
+              <form method="POST" action="/admin/logs/delete" style="display:inline" onsubmit="return confirm('এই লগটি Excel থেকে মুছে ফেলতে চান?')">
+                <input type="hidden" name="row_index" value="{{ l[0] }}">
+                <button type="submit" class="btn-del-log">&#x1F5D1;</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="7" class="no-orders">এখনো কোনো কথা ও সেন্টিমেন্ট নোট সেভ হয়নি।</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">Bella Basket Jewelry — Intelligent AI Bot (Gemini Context + Excel Sentiment Logging)</div>
 </div>
+
+<!-- EDIT LOG MODAL -->
+<div class="modal-bg" id="editLogModal">
+  <div class="modal">
+    <h3>&#x270F; কাস্টমার বার্তা ও সেন্টিমেন্ট সম্পাদনা</h3>
+    <form method="POST" action="/admin/logs/edit">
+      <input type="hidden" name="row_index" id="logRowIdx">
+      <div class="modal-row">
+        <label>কাস্টমারের কথা (User Message)</label>
+        <textarea class="modal-textarea" name="user_message" id="logUserMsg" rows="3" required></textarea>
+      </div>
+      <div class="modal-row">
+        <label>বট রিপ্লাই (Bot Reply)</label>
+        <textarea class="modal-textarea" name="bot_reply" id="logBotReply" rows="4" required></textarea>
+      </div>
+      <div class="modal-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label>সেন্টিমেন্ট (Sentiment)</label>
+          <select class="modal-select" name="sentiment" id="logSentiment">
+            <option value="General">&#x1F4AC; General (সাধারণ)</option>
+            <option value="Good">&#x1F44D; Good (ইতিবাচক / আগ্রহী)</option>
+            <option value="Bad">&#x1F44E; Bad (নেতিবাচক / না করেছে)</option>
+          </select>
+        </div>
+        <div>
+          <label>পণ্য (Product)</label>
+          <input class="modal-input" name="product" id="logProduct" placeholder="পণ্যের নাম">
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-cancel" onclick="closeLogEdit()">বাতিল</button>
+        <button type="submit" class="btn-save">&#x1F4BE; Excel-এ সংরক্ষণ করুন</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openLogEdit(rowIdx, userMsg, botReply, sentiment, product) {
+  document.getElementById('logRowIdx').value   = rowIdx;
+  document.getElementById('logUserMsg').value  = userMsg.replace(/\\n/g, '\n');
+  document.getElementById('logBotReply').value = botReply.replace(/\\n/g, '\n');
+  document.getElementById('logSentiment').value= sentiment || 'General';
+  document.getElementById('logProduct').value  = product || '';
+  document.getElementById('editLogModal').classList.add('show');
+}
+function closeLogEdit() {
+  document.getElementById('editLogModal').classList.remove('show');
+}
+</script>
 </body>
 </html>

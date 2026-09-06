@@ -3,60 +3,190 @@
     "id": 1,
     "name": "কাশ্মীরি চুড়ি (১ ডজন)",
     "category": "চুড়ি",
+    "unit_name": "ডজন",
+    "unit_quantity": 12,
     "price": 650,
-    "package": "১২ পিস",
-    "free_gift": "৪ পিস ফ্রি",
+    "package": "১২ পিস (১ ডজন)",
+    "free_gift": "৪ পিস ঘুগুর ফ্রি",
     "delivery": "ফ্রি",
-    "colors": ["মিক্সড", "ব্ল্যাক", "পেল হোয়াইট", "রেড", "পেস্তা গ্রিন", "ব্লু", "পার্পল", "পিংক", "মিন্ট", "ডার্ক অ্যাশ", "ডার্ক গ্রিন", "ডার্ক পিংক", "গোল্ডেন"],
-    "description": "উন্নত মানের কাশ্মীরি ডিজাইনের চুড়ি। ১৩টি রঙে পাওয়া যাচ্ছে।",
-    "image": ""
+    "keywords": [
+      "কাশ্মীরি চুড়ি",
+      "চুড়ি",
+      "churi",
+      "kashmiri",
+      "১ ডজন"
+    ],
+    "colors": [
+      "মিক্সড",
+      "ব্ল্যাক",
+      "পেল হোয়াইট",
+      "রেড",
+      "পেস্তা গ্রিন",
+      "ব্লু",
+      "পার্পল",
+      "পিংক",
+      "মিন্ট",
+      "ডার্ক অ্যাশ",
+      "ডার্ক গ্রিন",
+      "ডার্ক পিংক",
+      "গোল্ডেন"
+    ],
+    "description": "উন্নত মানের কাশ্মীরি ডিজাইনের চুড়ি।",
+    "image": "/static/uploads/2_459620_Kashmiri_Churi_rainbow_color.jpeg",
+    "images": [
+      "/static/uploads/2_459620_Kashmiri_Churi_rainbow_color.jpeg",
+      "/static/uploads/2_536552_Kashmiri_Churi_red.jpeg",
+      "/static/uploads/2_5365c5_Kashmiri_Churi_sky_blue.jpeg",
+      "/static/uploads/2_5b4525_Kashmiri_Churi_sea_green.jpeg",
+      "/static/uploads/2_6baa39_Kashmiri_Churi_light_purple.jpeg",
+      "/static/uploads/2_7d0210_Kashmiri_Churi_black.jpeg",
+      "/static/uploads/2_857ff4_Kashmiri_Churi_mint_green.jpeg",
+      "/static/uploads/2_ce101e_Kashmiri_Churi_dark_turquoise.jpeg",
+      "/static/uploads/2_dd3a19_Kashmiri_Churi_Golden.jpeg",
+      "/static/uploads/2_e5763f_Kashmiri_Churi_baby_pink.jpeg",
+      "/static/uploads/2_fbc66e_Kashmiri_Churi_pink.jpeg"
+    ],
+    "ai_instructions": "ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। প্রতি ডজন চুড়ির সাথে ৪ পিস ঘুগুর ফ্রি উপহার হিসেবে দেওয়া হবে।"
   },
   {
     "id": 2,
     "name": "কাশ্মীরি চুড়ি (২ ডজন)",
     "category": "চুড়ি",
+    "unit_name": "ডজন",
+    "unit_quantity": 24,
     "price": 1100,
-    "package": "২৪ পিস",
-    "free_gift": "৮ পিস ফ্রি",
+    "package": "২৪ পিস (২ ডজন)",
+    "free_gift": "৮ পিস ঘুগুর ফ্রি",
     "delivery": "ফ্রি",
-    "colors": ["মিক্সড", "ব্ল্যাক", "পেল হোয়াইট", "রেড", "পেস্তা গ্রিন", "ব্লু", "পার্পল", "পিংক", "মিন্ট", "ডার্ক অ্যাশ", "ডার্ক গ্রিন", "ডার্ক পিংক", "গোল্ডেন"],
+    "keywords": [
+      "কাশ্মীরি চুড়ি ২ ডজন",
+      "২ ডজন চুড়ি",
+      "২ ডজন চুড়ি",
+      "২৪ পিস",
+      "2 dozen",
+      "2 dozon",
+      "2 dojon",
+      "2 set churi",
+      "দুই ডজন"
+    ],
+    "colors": [
+      "মিক্সড",
+      "ব্ল্যাক",
+      "পেল হোয়াইট",
+      "রেড",
+      "পেস্তা গ্রিন",
+      "ব্লু",
+      "পার্পল",
+      "পিংক",
+      "মিন্ট",
+      "ডার্ক অ্যাশ",
+      "ডার্ক গ্রিন",
+      "ডার্ক পিংক",
+      "গোল্ডেন"
+    ],
     "description": "উন্নত মানের কাশ্মীরি চুড়ি। ২ ডজন প্যাকেজে সাশ্রয়ী মূল্যে।",
-    "image": ""
+    "image": "/static/uploads/2_459620_Kashmiri_Churi_rainbow_color.jpeg",
+    "images": [
+      "/static/uploads/2_459620_Kashmiri_Churi_rainbow_color.jpeg",
+      "/static/uploads/2_536552_Kashmiri_Churi_red.jpeg",
+      "/static/uploads/2_5365c5_Kashmiri_Churi_sky_blue.jpeg",
+      "/static/uploads/2_5b4525_Kashmiri_Churi_sea_green.jpeg",
+      "/static/uploads/2_6baa39_Kashmiri_Churi_light_purple.jpeg",
+      "/static/uploads/2_7d0210_Kashmiri_Churi_black.jpeg",
+      "/static/uploads/2_857ff4_Kashmiri_Churi_mint_green.jpeg",
+      "/static/uploads/2_ce101e_Kashmiri_Churi_dark_turquoise.jpeg",
+      "/static/uploads/2_dd3a19_Kashmiri_Churi_Golden.jpeg",
+      "/static/uploads/2_e5763f_Kashmiri_Churi_baby_pink.jpeg",
+      "/static/uploads/2_fbc66e_Kashmiri_Churi_pink.jpeg"
+    ],
+    "ai_instructions": "ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। ২ ডজন প্যাকেজে ৮ পিস ঘুগুর ফ্রি উপহার হিসেবে দেওয়া হবে।"
   },
   {
     "id": 3,
     "name": "বাটারফ্লাই ব্লিস জুয়েলারি সেট",
     "category": "জুয়েলারি সেট",
+    "unit_name": "সেট",
+    "unit_quantity": 1,
     "price": 650,
     "package": "১ সেট",
     "free_gift": "-",
     "delivery": "ফ্রি",
+    "keywords": [
+      "বাটারফ্লাই ব্লিস জুয়েলারি সেট",
+      "বাটারফ্লাই জুয়েলারি সেট",
+      "বাটারফ্লাই সেট",
+      "বাটারফ্লাই",
+      "butterfly bliss",
+      "butterfly",
+      "butterfly set"
+    ],
     "colors": [],
     "description": "সুন্দর বাটারফ্লাই ডিজাইনের জুয়েলারি সেট।",
-    "image": ""
+    "image": "/static/uploads/3_1771b1_Butterfly_Bliss_Jewelry_Set.jpeg",
+    "images": [
+      "/static/uploads/3_1771b1_Butterfly_Bliss_Jewelry_Set.jpeg"
+    ],
+    "ai_instructions": "ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। এই পণ্যে আলাদা কোনো গিফট নেই।"
   },
   {
     "id": 4,
     "name": "লাভ ব্লিস জুয়েলারি সেট",
     "category": "জুয়েলারি সেট",
+    "unit_name": "সেট",
+    "unit_quantity": 1,
     "price": 650,
     "package": "১ সেট",
     "free_gift": "-",
     "delivery": "ফ্রি",
+    "keywords": [
+      "লাভ ব্লিস জুয়েলারি সেট",
+      "লাভ ব্লিস",
+      "লাভ সেট",
+      "love bliss",
+      "love bliss set",
+      "love set"
+    ],
     "colors": [],
     "description": "হৃদয় ডিজাইনের সুন্দর জুয়েলারি সেট।",
-    "image": ""
+    "image": "/static/uploads/4_cec591_Love_Bliss_jewlry_set.jpeg",
+    "images": [
+      "/static/uploads/4_cec591_Love_Bliss_jewlry_set.jpeg"
+    ],
+    "ai_instructions": "ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। এই পণ্যে আলাদা কোনো গিফট নেই।"
   },
   {
     "id": 5,
     "name": "স্নেক গোল্ড পায়েল",
     "category": "পায়েল",
+    "unit_name": "জোড়া",
+    "unit_quantity": 1,
     "price": 350,
     "package": "১ জোড়া",
     "free_gift": "-",
     "delivery": "ফ্রি",
-    "colors": ["গোল্ডেন"],
+    "keywords": [
+      "স্নেক গোল্ড পায়েল",
+      "স্নেক গোল্ড পায়েল",
+      "পায়েল",
+      "পায়েল",
+      "গোল্ড পায়েল",
+      "গোল্ড পায়েল",
+      "স্নেক",
+      "payel",
+      "payal",
+      "snake payel",
+      "snake payal",
+      "নূপুর",
+      "nupur"
+    ],
+    "colors": [
+      "গোল্ডেন"
+    ],
     "description": "স্নেক ডিজাইনের গোল্ড কালার পায়েল।",
-    "image": ""
+    "image": "/static/uploads/5_4b348b_Snake_Gold_Pay.jpeg",
+    "images": [
+      "/static/uploads/5_4b348b_Snake_Gold_Pay.jpeg"
+    ],
+    "ai_instructions": "ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। ১ জোড়া স্নেক গোল্ড পায়েল। এই পণ্যে কোনো গিফট নেই।"
   }
 ]

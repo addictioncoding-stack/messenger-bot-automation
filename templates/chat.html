@@ -85,6 +85,7 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
         <h3>Bella Basket Bot</h3>
         <p><span class="online-dot"></span>Online — Test Mode</p>
       </div>
+      <button onclick="resetChat()" style="margin-left:auto; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s;" title="চ্যাট মেমরি রিসেট করে একদম নতুন করে শুরু করুন">🔄 নতুন চ্যাট</button>
     </div>
 
     <div class="messages" id="messages">
@@ -132,6 +133,19 @@ function addMessage(text, role) {
   scrollBottom();
 }
 
+function addImage(url) {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-avatar">&#x1F916;</div>
+    <div class="bubble" style="padding:6px">
+      <img src="${url}" style="max-width:220px;border-radius:10px;display:block"
+           onerror="this.parentElement.innerHTML='(ছবি লোড হয়নি)'">
+    </div>`;
+  messagesEl.appendChild(div);
+  scrollBottom();
+}
+
 function showTyping() {
   const div = document.createElement('div');
   div.className = 'msg bot'; div.id = 'typing';
@@ -169,7 +183,22 @@ async function sendMessage() {
     });
     const data = await res.json();
     hideTyping();
-    addMessage(data.reply || '...', 'bot');
+
+    // Handle new format: {replies: [{type, content}]}
+    if (data.replies && data.replies.length > 0) {
+      for (const r of data.replies) {
+        if (r.type === 'text') {
+          addMessage(r.content, 'bot');
+        } else if (r.type === 'image') {
+          addImage(r.content);
+        }
+      }
+    } else if (data.reply) {
+      // Old format fallback
+      addMessage(data.reply, 'bot');
+    } else {
+      addMessage('...', 'bot');
+    }
   } catch(e) {
     hideTyping();
     addMessage('সংযোগ সমস্যা হয়েছে। আবার চেষ্টা করুন।', 'bot');
@@ -184,11 +213,22 @@ input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-// Auto resize textarea
-input.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-});
+async function resetChat() {
+  if (!confirm('চ্যাট মেমরি রিসেট করে একদম শুরু থেকে শুরু করতে চান?')) return;
+  try {
+    await fetch('/admin/chat/reset', { method: 'POST' });
+    messagesEl.innerHTML = `
+      <div class="msg bot">
+        <div class="msg-avatar">&#x1F916;</div>
+        <div class="bubble">চ্যাট সেশন রিসেট করা হয়েছে! 🌸<br>এখন শুরু থেকে কথা বলতে 'hi' বা যেকোনো কিছু লিখুন 😊</div>
+      </div>
+    `;
+    input.value = '';
+    input.focus();
+  } catch (e) {
+    alert('রিসেট করতে সমস্যা হয়েছে');
+  }
+}
 
 scrollBottom();
 </script>

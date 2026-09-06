@@ -1,0 +1,11 @@
+{
+  "debug_user_1": {
+    "state": "ASK_COLOR_CHOICE",
+    "product": "কাশ্মীরি চুড়ি (১ ডজন)"
+  },
+  "test_user_journey_97": {
+    "state": "IDLE",
+    "product": "স্নেক গোল্ড পায়েল",
+    "cart": []
+  }
+}

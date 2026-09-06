@@ -39,6 +39,8 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 .card-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06)}
 .btn-img{flex:1;background:rgba(233,30,140,.12);border:1px solid rgba(233,30,140,.25);color:#e91e8c;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
 .btn-img:hover{background:rgba(233,30,140,.22)}
+.btn-edit{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:#60a5fa;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-edit:hover{background:rgba(59,130,246,.25)}
 .btn-del{background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.2);color:#ff6b6b;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:.2s}
 .btn-del:hover{background:rgba(255,59,59,.22)}
 .has-img-badge{position:absolute;top:10px;left:10px;background:rgba(34,197,94,.85);color:#fff;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700}
@@ -86,7 +88,9 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
     {% for p in products %}
     <div class="product-card">
 
-      {% if p.image %}
+      {% if p.images and p.images|length > 1 %}
+        <span class="has-img-badge">&#x2705; {{ p.images|length }}টি ছবি আছে</span>
+      {% elif p.image %}
         <span class="has-img-badge">&#x2705; ছবি আছে</span>
       {% endif %}
 
@@ -103,20 +107,34 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
       </div>
 
       <div class="p-body">
-        <div class="p-category">{{ p.category }}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <div class="p-category">{{ p.category }}</div>
+          <span style="background:rgba(233,30,140,.2); color:#ff6b9d; font-size:10px; font-weight:700; padding:2px 8px; border-radius:6px;">একক: {{ p.unit_name or 'পিস' }}</span>
+        </div>
         <div class="p-name">{{ p.name }}</div>
         <div class="p-price">৳{{ p.price }}</div>
         <div class="p-detail">&#x1F4E6; {{ p.package }}</div>
         {% if p.free_gift and p.free_gift != '-' %}
           <div class="p-detail">&#x1F381; গিফট: {{ p.free_gift }}</div>
         {% endif %}
-        <div class="p-detail">{{ p.description[:60] }}{% if p.description|length > 60 %}...{% endif %}</div>
+        {% if p.keywords %}
+        <div style="margin-top:6px; font-size:10px; color:rgba(255,255,255,.45); line-height:1.4;">
+          &#x1F50D; <strong>কিওয়ার্ড:</strong> {{ p.keywords[:5]|join(', ') }}{% if p.keywords|length > 5 %}...{% endif %}
+        </div>
+        {% endif %}
+        {% if p.ai_instructions %}
+        <div style="margin-top:6px; font-size:11px; color:#fb7185; background:rgba(244,63,94,.12); border:1px solid rgba(244,63,94,.25); border-radius:8px; padding:6px 10px; line-height:1.4;">
+          🤖 <strong>AI নোট:</strong> {{ p.ai_instructions }}
+        </div>
+        {% endif %}
+        <div class="p-detail" style="margin-top:4px;">{{ p.description[:60] }}{% if p.description|length > 60 %}...{% endif %}</div>
         {% if p.colors %}
         <div class="p-colors">{% for c in p.colors %}<span class="color-tag">{{ c }}</span>{% endfor %}</div>
         {% endif %}
       </div>
 
       <div class="card-actions">
+        <button class="btn-edit" type="button" onclick='openEditModal({{ p|tojson }})'>&#x270F;&#xFE0F; এডিট</button>
         <button class="btn-img" onclick="openImgModal({{ p.id }}, '{{ p.image|e }}', '{{ p.name|e }}')">
           &#x1F4F7; {% if p.image %}ছবি বদলান{% else %}ছবি যোগ করুন{% endif %}
         </button>
@@ -132,7 +150,7 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
   <!-- ADD NEW PRODUCT -->
   <div class="add-card">
     <h3>&#x2795; নতুন পণ্য যোগ করুন</h3>
-    <form method="POST" action="/admin/products/add">
+    <form method="POST" action="/admin/products/add" enctype="multipart/form-data">
       <div class="form-grid">
         <div class="form-group">
           <label>পণ্যের নাম *</label>
@@ -147,25 +165,53 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
           <input class="form-input" name="price" type="number" placeholder="650" required>
         </div>
         <div class="form-group">
-          <label>প্যাকেজ</label>
-          <input class="form-input" name="package" placeholder="১২ পিস / ১ জোড়া">
+          <label>একক (Unit Word) *</label>
+          <select class="form-input" name="unit_name" style="background:#1f293d; color:#fff;" required>
+            <option value="ডজন">ডজন (Dozen — যেমন: চুড়ি)</option>
+            <option value="সেট">সেট (Set — যেমন: জুয়েলারি সেট)</option>
+            <option value="জোড়া">জোড়া (Pair — যেমন: পায়েল, কানের দুল)</option>
+            <option value="পিস">পিস (Piece — যেমন: ব্যাগ, ঘড়ি, সাধারণ পণ্য)</option>
+            <option value="অন্যান্য">অন্যান্য</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>প্রতি ইউনিটে পরিমাণ (সংখ্যা)</label>
+          <input class="form-input" name="unit_quantity" type="number" value="1" placeholder="ডজনের জন্য 12, সেটের জন্য 1">
+        </div>
+        <div class="form-group">
+          <label>প্যাকেজ টেক্সট</label>
+          <input class="form-input" name="package" placeholder="১২ পিস / ১ জোড়া / ১ সেট">
         </div>
         <div class="form-group">
           <label>ফ্রি গিফট</label>
-          <input class="form-input" name="free_gift" placeholder="৪ পিস ফ্রি">
+          <input class="form-input" name="free_gift" placeholder="৪ পিস ঘুগুর ফ্রি">
         </div>
         <div class="form-group">
           <label>ডেলিভারি</label>
           <input class="form-input" name="delivery" value="ফ্রি">
         </div>
         <div class="form-group full">
-          <label>পণ্যের ছবির URL</label>
+          <label>সার্চ কিওয়ার্ড ও সমার্থক শব্দ (কমা দিয়ে আলাদা করুন)</label>
+          <input class="form-input" name="keywords" placeholder="যেমন: চুড়ি, churi, kashmiri, bangles, ১ ডজন">
+          <div class="hint">কাস্টমার যে যে শব্দ দিয়ে এই পণ্যটি চাইবে বা খুঁজবে (বাংলা ও বাংলিশ) তা কমা দিয়ে লিখুন। Bot স্বয়ংক্রিয়ভাবে চিনবে।</div>
+        </div>
+        <div class="form-group full">
+          <label>গ্যালারি থেকে ছবি আপলোড (একাধিক ছবি সিলেক্ট করা যাবে)</label>
+          <input class="form-input" type="file" name="image_files" multiple accept="image/*" style="padding: 7px 14px;">
+        </div>
+        <div class="form-group full">
+          <label>অথবা ছবির URL দিন</label>
           <input class="form-input" name="image_url" placeholder="https://example.com/product.jpg">
           <div class="hint">Facebook post বা যেকোনো public image URL paste করুন</div>
         </div>
         <div class="form-group full">
           <label>রঙ (comma দিয়ে আলাদা)</label>
           <input class="form-input" name="colors" placeholder="রেড, পিংক, ব্লু, গোল্ডেন">
+        </div>
+        <div class="form-group full">
+          <label style="color:#f43f5e; font-weight:700;">🤖 AI নির্দেশনা ও অফার নোট (ডেলিভারি চার্জ, গিফট ও ডিসকাউন্টের নিয়ম)</label>
+          <textarea class="form-textarea" name="ai_instructions" rows="2" placeholder="যেমন: এই প্রোডাক্টে কোনো ডেলিভারি চার্জ ফ্রি নেই, চার্জ ৮০ টাকা। কোনো গিফট নেই। ২টা নিলে ১০০ টাকা ছাড়... (বট কাস্টমারকে হুবহু এই তথ্য জানাবে)"></textarea>
+          <div class="hint">Gemini AI এই বক্সে লেখা নির্দেশ সরাসরি পড়ে কাস্টমারকে পণ্যের বিশেষ ছাড় বা ডেলিভারি নিয়ম জানাবে।</div>
         </div>
         <div class="form-group full">
           <label>বিবরণ</label>
@@ -181,9 +227,13 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
 <div class="modal-bg" id="imgModal">
   <div class="modal">
     <h3>&#x1F4F7; পণ্যের ছবি দিন</h3>
-    <form method="POST" action="/admin/products/update_image">
+    <form method="POST" action="/admin/products/update_image" enctype="multipart/form-data">
       <input type="hidden" name="id" id="modalProductId">
-      <label>ছবির URL</label>
+      
+      <label style="margin-top: 10px;">গ্যালারি থেকে ছবি আপলোড (একাধিক ছবি সিলেক্ট করা যাবে)</label>
+      <input class="form-input" type="file" name="image_files" multiple accept="image/*" style="margin-bottom: 10px;">
+      
+      <label>অথবা ছবির URL দিন</label>
       <input class="form-input" name="image_url" id="modalImgUrl"
              placeholder="https://..." oninput="previewImg(this.value)">
       <div class="modal-hint">Facebook post এর ছবি, Google Drive (public), বা যেকোনো public URL</div>
@@ -198,7 +248,97 @@ body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh
   </div>
 </div>
 
+<!-- EDIT PRODUCT MODAL -->
+<div class="modal-bg" id="editModal">
+  <div class="modal" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+    <h3>&#x270F;&#xFE0F; পণ্যের তথ্য ও AI নির্দেশনা পরিবর্তন করুন</h3>
+    <form method="POST" action="/admin/products/edit">
+      <input type="hidden" name="id" id="editModalId">
+      
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>পণ্যের নাম *</label>
+          <input class="form-input" name="name" id="editModalName" required>
+        </div>
+        <div class="form-group">
+          <label>ক্যাটাগরি</label>
+          <input class="form-input" name="category" id="editModalCategory">
+        </div>
+        <div class="form-group">
+          <label>মূল্য (৳) *</label>
+          <input class="form-input" name="price" id="editModalPrice" type="number" required>
+        </div>
+        <div class="form-group">
+          <label>একক (Unit Word) *</label>
+          <select class="form-input" name="unit_name" id="editModalUnitName" style="background:#1f293d; color:#fff;" required>
+            <option value="ডজন">ডজন (Dozen — যেমন: চুড়ি)</option>
+            <option value="সেট">সেট (Set — যেমন: জুয়েলারি সেট)</option>
+            <option value="জোড়া">জোড়া (Pair — যেমন: পায়েল, কানের দুল)</option>
+            <option value="পিস">পিস (Piece — যেমন: ব্যাগ, ঘড়ি, সাধারণ পণ্য)</option>
+            <option value="অন্যান্য">অন্যান্য</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>প্রতি ইউনিটে পরিমাণ</label>
+          <input class="form-input" name="unit_quantity" id="editModalUnitQty" type="number">
+        </div>
+        <div class="form-group">
+          <label>প্যাকেজ টেক্সট</label>
+          <input class="form-input" name="package" id="editModalPackage">
+        </div>
+        <div class="form-group">
+          <label>ফ্রি গিফট</label>
+          <input class="form-input" name="free_gift" id="editModalFreeGift">
+        </div>
+        <div class="form-group full">
+          <label>ডেলিভারি (যেমন: ফ্রি অথবা চার্জ ৮০ টাকা)</label>
+          <input class="form-input" name="delivery" id="editModalDelivery">
+        </div>
+        <div class="form-group full">
+          <label style="color:#f43f5e; font-weight:700;">🤖 AI নির্দেশনা ও অফার নোট (ডেলিভারি চার্জ, গিফট ও ডিসকাউন্টের নিয়ম)</label>
+          <textarea class="form-textarea" name="ai_instructions" id="editModalAiInstructions" rows="3" placeholder="যেমন: ডেলিভারি চার্জ সম্পূর্ণ ফ্রি। প্রতি ডজনে ৪ পিস ঘুগুর গিফট।"></textarea>
+          <div class="hint">Gemini AI সরাসরি এই তথ্য কাস্টমারকে জানাবে।</div>
+        </div>
+        <div class="form-group full">
+          <label>সার্চ কিওয়ার্ড (কমা দিয়ে আলাদা করুন)</label>
+          <input class="form-input" name="keywords" id="editModalKeywords">
+        </div>
+        <div class="form-group full">
+          <label>বিবরণ</label>
+          <textarea class="form-textarea" name="description" id="editModalDescription"></textarea>
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">বাতিল</button>
+        <button type="submit" class="btn-add">&#x2713; আপডেট সেভ করুন</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
+function openEditModal(p) {
+  document.getElementById('editModalId').value = p.id || '';
+  document.getElementById('editModalName').value = p.name || '';
+  document.getElementById('editModalCategory').value = p.category || '';
+  document.getElementById('editModalPrice').value = p.price || 0;
+  document.getElementById('editModalUnitName').value = p.unit_name || 'পিস';
+  document.getElementById('editModalUnitQty').value = p.unit_quantity || 1;
+  document.getElementById('editModalPackage').value = p.package || '';
+  document.getElementById('editModalFreeGift').value = p.free_gift || '';
+  document.getElementById('editModalDelivery').value = p.delivery || 'ফ্রি';
+  document.getElementById('editModalAiInstructions').value = p.ai_instructions || '';
+  document.getElementById('editModalKeywords').value = (p.keywords || []).join(', ');
+  document.getElementById('editModalDescription').value = p.description || '';
+  document.getElementById('editModal').classList.add('show');
+}
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('show');
+}
+document.getElementById('editModal').addEventListener('click', function(e){
+  if(e.target===this) closeEditModal();
+});
+
 function openImgModal(id, currentUrl, name) {
   document.getElementById('modalProductId').value = id;
   document.getElementById('modalImgUrl').value    = currentUrl || '';

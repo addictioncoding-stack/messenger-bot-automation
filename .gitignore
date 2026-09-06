@@ -16,3 +16,8 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Data & Test
+orders.xlsx
+scratch/
+
