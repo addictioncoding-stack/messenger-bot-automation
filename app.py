@@ -34,7 +34,7 @@ app.secret_key = os.getenv("SECRET_KEY", "bella_basket_2024")
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "static", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024 # 100 MB limit (allows 15+ high-res images)
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 # 500 MB limit (allows 30+ high-res images)
 
 PAGE_ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")
 VERIFY_TOKEN      = os.getenv("VERIFY_TOKEN")
@@ -2451,6 +2451,12 @@ def receive_message():
 @app.route("/")
 def home():
     return redirect(url_for("admin_dashboard"))
+
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    return redirect(url_for("admin_products", msg="⚠️ ফাইলের সাইজ অনেক বড় ছিল! অনুগ্রহ করে কম সাইজের ছবি নির্বাচন করুন।"))
+
 
 
 if __name__ == "__main__":
