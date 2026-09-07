@@ -715,8 +715,16 @@ def process_message(sender_id, text):
                 gift_text = f" + {p['free_gift']}" if p.get("free_gift") and p.get("free_gift") != "-" else ""
                 prod_details.append(f"✨ {p_name} — ৳{p_price:,} ({p.get('package','')}{gift_text})")
 
-            # Send all images for detected products
+            # Send all unique images for detected products (no duplicates)
+            seen_imgs = set()
+            unique_imgs = []
             for u in all_imgs:
+                if u and u not in seen_imgs:
+                    seen_imgs.add(u)
+                    unique_imgs.append(u)
+
+            # Cap images to 12 max per inquiry so they send instantly together
+            for u in unique_imgs[:12]:
                 img(u)
 
             details_str = "\n".join(prod_details)
