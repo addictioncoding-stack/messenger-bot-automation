@@ -517,31 +517,115 @@ def get_persuasion_reply(sender_id):
 
 
 # ====================================================
-# FACEBOOK MESSENGER SEND
+# FACEBOOK MESSENGER SEND & ATTACHMENT CDN CACHING
 # ====================================================
+ATTACHMENT_CACHE_FILE = os.path.join(DATA_DIR, "attachment_cache.json")
+
+def load_attachment_cache():
+    try:
+        if os.path.exists(ATTACHMENT_CACHE_FILE):
+            with open(ATTACHMENT_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"[CACHE LOAD ERR] {e}")
+    return {}
+
+def save_attachment_cache(cache):
+    try:
+        with open(ATTACHMENT_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=2)
+    except Exception as e:
+        print(f"[CACHE SAVE ERR] {e}")
+
+attachment_cache = load_attachment_cache()
+
 def _fb(payload):
     try:
         r = requests.post("https://graph.facebook.com/v21.0/me/messages",
-            json=payload, params={"access_token": PAGE_ACCESS_TOKEN}, timeout=10)
-        if r.status_code != 200:
+            json=payload, params={"access_token": PAGE_ACCESS_TOKEN}, timeout=15)
+        if r.status_code == 200:
+            res_data = r.json()
+            att_id = res_data.get("attachment_id")
+            if att_id:
+                url_sent = payload.get("message", {}).get("attachment", {}).get("payload", {}).get("url")
+                if url_sent:
+                    attachment_cache[url_sent] = att_id
+                    save_attachment_cache(attachment_cache)
+            return res_data
+        else:
             print(f"[FB ERR] {r.status_code}: {r.text[:100]}")
     except Exception as e:
         print(f"[FB ERR] {e}")
+    return None
 
 def send_text(rid, text):
     _fb({"recipient":{"id":rid},"message":{"text":text},"messaging_type":"RESPONSE"})
 
-def send_image(rid, url):
-    if url.startswith("/"):
-        url = request.host_url.rstrip("/") + url
-    _fb({"recipient":{"id":rid},"message":{
-        "attachment":{"type":"image","payload":{"url":url,"is_reusable":True}}
-    },"messaging_type":"RESPONSE"})
+def send_image(rid, url, host_url=None):
+    clean_url = url
+    cached_id = attachment_cache.get(clean_url)
+    if not cached_id:
+        for k, v in attachment_cache.items():
+            if k in clean_url:
+                cached_id = v
+                break
+
+    if cached_id:
+        payload = {
+            "recipient": {"id": rid},
+            "message": {
+                "attachment": {
+                    "type": "image",
+                    "payload": {"attachment_id": str(cached_id)}
+                }
+            },
+            "messaging_type": "RESPONSE"
+        }
+    else:
+        full_url = url
+        if full_url.startswith("/"):
+            base = host_url or (request.host_url.rstrip("/") if request else "https://finally-hula-sandpaper.ngrok-free.dev")
+            full_url = base + full_url
+        payload = {
+            "recipient": {"id": rid},
+            "message": {
+                "attachment": {
+                    "type": "image",
+                    "payload": {"url": full_url, "is_reusable": True}
+                }
+            },
+            "messaging_type": "RESPONSE"
+        }
+    _fb(payload)
 
 def send_typing(rid):
     _fb({"recipient":{"id":rid},"sender_action":"typing_on"})
 
+def dispatch_actions_fast(sid, actions):
+    """
+    Sends all images concurrently in parallel via Facebook CDN attachment_id
+    so that all photos arrive at once without delay!
+    """
+    img_actions = [act["content"] for act in actions if act["type"] == "image"]
+    txt_actions = [act["content"] for act in actions if act["type"] == "text"]
+
+    if img_actions:
+        host = "https://finally-hula-sandpaper.ngrok-free.dev"
+        try:
+            if request and request.host_url:
+                host = request.host_url.rstrip("/")
+        except:
+            pass
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=min(len(img_actions), 10)) as executor:
+            list(executor.map(lambda u: send_image(sid, u, host_url=host), img_actions))
+
+    for txt_msg in txt_actions:
+        send_text(sid, txt_msg)
+
 user_profile_cache = {}
+
+
 
 def get_user_profile(sender_id):
     """
@@ -2264,7 +2348,11 @@ def admin_product_add():
 @app.route("/admin/products/update_image", methods=["POST"])
 @login_required
 def admin_product_update_image():
-    pid = int(request.form.get("id",0))
+    raw_id = request.form.get("id") or request.form.get("product_id") or "0"
+    try:
+        pid = int(raw_id)
+    except:
+        pid = 0
     products = load_products()
     
     for p in products:
@@ -2407,9 +2495,7 @@ def receive_message():
                                 save_conversation_log(sid, f"[VOICE_NOTE: {transcribed_text}]", "", "General", "")
                                 # Process the transcribed voice note as normal customer text!
                                 actions = process_message(sid, transcribed_text)
-                                for act in actions:
-                                    if act["type"] == "text": send_text(sid, act["content"])
-                                    elif act["type"] == "image": send_image(sid, act["content"])
+                                dispatch_actions_fast(sid, actions)
                             else:
                                 send_text(sid, "আপনার ভয়েস মেসেজটি শুনেছি! বিস্তারিত জানতে বা অর্ডার করতে টেক্সট এ লিখুন 😊")
 
@@ -2440,9 +2526,7 @@ def receive_message():
                 elif "text" in msg:
                     text    = msg["text"]
                     actions = process_message(sid, text)
-                    for act in actions:
-                        if act["type"]=="text": send_text(sid, act["content"])
-                        elif act["type"]=="image": send_image(sid, act["content"])
+                    dispatch_actions_fast(sid, actions)
                     bot_state["replied"] += 1
 
     return "OK",200
