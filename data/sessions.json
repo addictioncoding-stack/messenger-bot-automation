@@ -7,5 +7,25 @@
     "state": "IDLE",
     "product": "স্নেক গোল্ড পায়েল",
     "cart": []
+  },
+  "test_speed_check": {
+    "state": "ASK_COLOR_CHOICE",
+    "product": "কাশ্মীরি চুড়ি (১ ডজন)",
+    "cart": []
+  },
+  "test_speed_check_2": {
+    "state": "ASK_COLOR_CHOICE",
+    "product": "কাশ্মীরি চুড়ি (১ ডজন)",
+    "cart": []
+  },
+  "test_imgs": {
+    "state": "ASK_COLOR_CHOICE",
+    "product": "কাশ্মীরি চুড়ি (১ ডজন)",
+    "cart": []
+  },
+  "27492754557070882": {
+    "state": "ASK_COLOR_CHOICE",
+    "product": "কাশ্মীরি চুড়ি (১ ডজন)",
+    "cart": []
   }
 }

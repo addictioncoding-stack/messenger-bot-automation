@@ -1358,7 +1358,7 @@ def process_message(sender_id, text):
             )
             txt(reply_msg)
             imgs = get_keyword_product_images_list(last_added["name"])
-            for u in imgs[:2]: img(u)
+            for u in imgs[:12]: img(u)
             save_conversation_log(sender_id, text, reply_msg, sentiment, last_added["name"])
             return actions
 
@@ -1516,7 +1516,17 @@ def process_message(sender_id, text):
         suggested_upsell = order_info.get("suggested_upsell", "স্নেক গোল্ড পায়েল")
 
         tl = text.lower().strip()
-        matched_items = detect_products_list(text)
+        is_pic_query = any(w in tl for w in ["pic", "ছবি", "পিক", "দেখাও", "photo", "chobi", "dekhao", "picture"])
+        if is_pic_query:
+            target_p = matched_items[0]["name"] if matched_items else suggested_upsell
+            imgs = get_keyword_product_images_list(target_p)
+            for u in imgs[:12]:
+                img(u)
+            reply_msg = f"স্যার/ম্যাডাম, এই যে আমাদের '{target_p}'-এর সবগুলো ছবি দেখুন! 😊\nএটি কি আপনার পার্সেলের সাথে যোগ করে দেব?"
+            txt(reply_msg)
+            save_conversation_log(sender_id, text, reply_msg, sentiment, target_p)
+            return actions
+
         is_yes = any(w in tl for w in ["হ্যাঁ", "yes", "ha", "hae", "হুম", "নেব", "নেবো", "নিব", "নিবো", "দাও", "দেন", "চাই", "add", "পায়েল", "payel", "সেট", "set", "চুড়ি", "churi"])
 
         # Customer DECLINED upsell
@@ -1544,10 +1554,10 @@ def process_message(sender_id, text):
 
             new_total = original_bill + upsell_price
 
-            # Send upsell product picture!
+            # Send upsell product pictures (all available up to 12)!
             upsell_imgs = get_keyword_product_images_list(chosen_product)
             if upsell_imgs:
-                for u in upsell_imgs[:2]:
+                for u in upsell_imgs[:12]:
                     img(u)
 
             # Update order in order book
@@ -2353,6 +2363,32 @@ def admin_product_add():
     save_products(products)
     return redirect(url_for("admin_products", msg="পণ্য যোগ হয়েছে!"))
 
+def async_cache_image(img_path):
+    import threading
+    def _worker():
+        try:
+            base_url = "https://finally-hula-sandpaper.ngrok-free.dev"
+            full_url = base_url + img_path if img_path.startswith("/") else img_path
+            api_url = "https://graph.facebook.com/v21.0/me/message_attachments"
+            payload = {
+                "message": {
+                    "attachment": {
+                        "type": "image",
+                        "payload": {"is_reusable": True, "url": full_url}
+                    }
+                }
+            }
+            r = requests.post(api_url, json=payload, params={"access_token": PAGE_ACCESS_TOKEN}, timeout=25)
+            if r.status_code == 200:
+                att_id = r.json().get("attachment_id")
+                if att_id:
+                    attachment_cache[img_path] = att_id
+                    save_attachment_cache(attachment_cache)
+                    print(f"[ASYNC CACHE SUCCESS] {img_path} -> {att_id}")
+        except Exception as e:
+            print(f"[ASYNC CACHE ERR] {e}")
+    threading.Thread(target=_worker, daemon=True).start()
+
 @app.route("/admin/products/update_image", methods=["POST"])
 @login_required
 def admin_product_update_image():
@@ -2362,31 +2398,61 @@ def admin_product_update_image():
     except:
         pid = 0
     products = load_products()
+    mode = request.form.get("upload_mode", "replace") # Default to replace so new uploads overwrite old correctly
     
     for p in products:
         if p["id"] == pid:
-            images = p.get("images", [p.get("image")] if p.get("image") else [])
+            existing = p.get("images", [p.get("image")] if p.get("image") else [])
+            images = [] if mode == "replace" else list(existing)
+            new_uploaded = []
             
             # Add new files
             files = request.files.getlist("image_files")
             for f in files:
-                if f and allowed_file(f.filename):
+                if f and f.filename and allowed_file(f.filename):
                     filename = secure_filename(f"{pid}_{uuid.uuid4().hex[:6]}_{f.filename}")
                     f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    images.append(f"/static/uploads/{filename}")
+                    img_path = f"/static/uploads/{filename}"
+                    images.append(img_path)
+                    new_uploaded.append(img_path)
+                    async_cache_image(img_path)
                     
             # Add new text URL
             text_url = request.form.get("image_url","").strip()
             if text_url and text_url not in images:
                 images.append(text_url)
+                new_uploaded.append(text_url)
+                if text_url.startswith("http"):
+                    async_cache_image(text_url)
                 
+            if mode == "replace" and not new_uploaded:
+                # If replace mode was chosen but user uploaded nothing, keep existing
+                images = existing
+
             p["images"] = images
             if images:
                 p["image"] = images[0]
             break
             
     save_products(products)
-    return redirect(url_for("admin_products", msg="ছবি আপডেট হয়েছে!"))
+    count = len(new_uploaded) if 'new_uploaded' in locals() and new_uploaded else 0
+    return redirect(url_for("admin_products", msg=f"সফলভাবে {count}টি ছবি আপডেট হয়েছে! মোট ছবি: {len(p.get('images',[]))}টি"))
+
+@app.route("/admin/products/delete_image", methods=["POST"])
+@login_required
+def admin_product_delete_image():
+    pid = int(request.form.get("product_id", 0))
+    img_url = request.form.get("image_url", "").strip()
+    products = load_products()
+    for p in products:
+        if p["id"] == pid:
+            if "images" in p and img_url in p["images"]:
+                p["images"].remove(img_url)
+                p["image"] = p["images"][0] if p["images"] else ""
+            break
+    save_products(products)
+    return redirect(url_for("admin_products", msg="ছবিটি মুছে ফেলা হয়েছে!"))
+
 
 @app.route("/admin/products/edit", methods=["POST"])
 @login_required
@@ -2437,13 +2503,13 @@ def admin_product_delete():
     return redirect(url_for("admin_products", msg="মুছে ফেলা হয়েছে!"))
 
 # ── Demo Chat ──
+@app.route("/chat")
 @app.route("/admin/chat")
-@login_required
 def admin_chat():
     return render_template("chat.html")
 
+@app.route("/chat/send", methods=["POST"])
 @app.route("/admin/chat/send", methods=["POST"])
-@login_required
 def admin_chat_send():
     data = request.get_json()
     msg  = data.get("message","").strip()
@@ -2456,8 +2522,8 @@ def admin_chat_send():
     actions = process_message("DEMO_ADMIN", msg)
     return jsonify({"replies": actions})
 
+@app.route("/chat/reset", methods=["POST"])
 @app.route("/admin/chat/reset", methods=["POST"])
-@login_required
 def admin_chat_reset():
     user_sessions.pop("DEMO_ADMIN", None)
     user_chat_history.pop("DEMO_ADMIN", None)
