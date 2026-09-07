@@ -2450,7 +2450,8 @@ def receive_message():
 
 @app.route("/")
 def home():
-    return jsonify({"bot":"Bella Basket Bot","active":bot_state["active"],"admin":"/admin"})
+    return redirect(url_for("admin_dashboard"))
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT",5000))
