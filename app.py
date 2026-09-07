@@ -196,8 +196,7 @@ def products_by_category(cat_kw):
 # DETECTION HELPERS
 # ====================================================
 PRODUCT_KW = {
-    "কাশ্মীরি চুড়ি (১ ডজন)": ["কাশ্মীরি","চুড়ি","চুড়ি","বাংলস","১২","ডজন","churi","chury","bangle","bangles"],
-    "কাশ্মীরি চুড়ি (২ ডজন)": ["২৪ পিস","দুই ডজন","2 dozon","2 dojon","2 dozen"],
+    "কাশ্মীরি চুড়ি": ["কাশ্মীরি","চুড়ি","চুড়ি","বাংলস","১২","২৪","২৪ পিস","ডজন","দুই ডজন","churi","chury","bangle","bangles","2 dozon","2 dojon","2 dozen"],
     "বাটারফ্লাই ব্লিস জুয়েলারি সেট": ["বাটারফ্লাই","butterfly"],
     "লাভ ব্লিস জুয়েলারি সেট":  ["লাভ ব্লিস","love bliss"],
     "স্নেক গোল্ড পায়েল":       ["পায়েল","পায়েল","গোল্ড পায়েল","গোল্ড পায়েল","স্নেক","payel","payal","snake payel","নূপুর","nupur"],
@@ -2407,11 +2406,23 @@ def admin_product_update_image():
             new_uploaded = []
             
             # Add new files
+            from PIL import Image
             files = request.files.getlist("image_files")
             for f in files:
                 if f and f.filename and allowed_file(f.filename):
-                    filename = secure_filename(f"{pid}_{uuid.uuid4().hex[:6]}_{f.filename}")
-                    f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    ext = f.filename.rsplit('.', 1)[1].lower() if '.' in f.filename else 'jpg'
+                    target_ext = 'jpg' if ext in ['jpg', 'jpeg', 'png', 'webp'] else ext
+                    filename = secure_filename(f"{pid}_{uuid.uuid4().hex[:6]}_{f.filename.rsplit('.', 1)[0]}.{target_ext}")
+                    save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    try:
+                        im = Image.open(f)
+                        im.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
+                        if im.mode in ("RGBA", "P"):
+                            im = im.convert("RGB")
+                        im.save(save_path, "JPEG", optimize=True, quality=85)
+                    except Exception as err:
+                        f.seek(0)
+                        f.save(save_path)
                     img_path = f"/static/uploads/{filename}"
                     images.append(img_path)
                     new_uploaded.append(img_path)
